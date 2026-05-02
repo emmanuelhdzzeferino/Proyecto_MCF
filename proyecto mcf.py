@@ -41,7 +41,7 @@ ax_rend.axhline(y=0, color='red', linestyle='--', alpha=0.6)
 ax_rend.set_title("Rendimientos Diarios de TSLA")
 st.pyplot(fig_rend)
 
-# --- INCISO (C): TABLA DE VaR Y ES ESTÁTICO ---
+# --- TABLA DE VaR Y ES ESTÁTICO ---
 st.subheader("Cálculo de VaR y ES")
 
 mean = np.mean(df_rend)
@@ -56,7 +56,7 @@ sim_student = t.rvs(nu, loc=loc_t, scale=scale_t, size=n_sims)
 resultados_lista = []
 
 for alpha in alphas:
-    # 
+    # --- TUS FÓRMULAS ORIGINALES ---
     var_h = df_rend.quantile(1 - alpha)
     es_h = df_rend[df_rend <= var_h].mean()
 
@@ -73,15 +73,29 @@ for alpha in alphas:
     var_mct = np.percentile(sim_student, (1 - alpha) * 100)
     es_mct = sim_student[sim_student <= var_mct].mean()
 
+    # --- CORRECCIÓN: Convertir cada valor a un float escalar ---
+    # Usamos float(x.item()) si es una Serie/Array de un solo elemento
+    def to_scalar(x):
+        try:
+            return float(x.item()) if hasattr(x, 'item') else float(x)
+        except:
+            return float(x)
+
     resultados_lista.append({
         "Confianza": f"{alpha*100}%",
-        "VaR Hist": var_h, "ES Hist": es_h,
-        "VaR Norm": var_n, "ES Norm": es_n,
-        "VaR t-Stud": var_t, "ES t-Stud": es_t_analitico,
-        "VaR MC-Norm": var_mcn, "ES MC-Norm": es_mcn,
-        "VaR MC-t": var_mct, "ES MC-t": es_mct
+        "VaR Hist": to_scalar(var_h), 
+        "ES Hist": to_scalar(es_h),
+        "VaR Norm": to_scalar(var_n), 
+        "ES Norm": to_scalar(es_n),
+        "VaR t-Stud": to_scalar(var_t), 
+        "ES t-Stud": to_scalar(es_t_analitico),
+        "VaR MC-Norm": to_scalar(var_mcn), 
+        "ES MC-Norm": to_scalar(es_mcn),
+        "VaR MC-t": to_scalar(var_mct), 
+        "ES MC-t": to_scalar(es_mct)
     })
 
+# Crear DataFrame y aplicar formato
 df_final = pd.DataFrame(resultados_lista).set_index("Confianza")
 st.dataframe(df_final.style.format("{:.4%}"))
 

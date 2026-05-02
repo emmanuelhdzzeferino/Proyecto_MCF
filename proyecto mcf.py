@@ -51,7 +51,7 @@ col_s1, col_s2 = st.columns(2)
 
 with col_s1:
     st.metric("Estadístico W", f"{stat_shapiro:.4f}")
-    st.metric("P-Valor", f"{p_val_shapiro:.4f}")
+    st.metric("P-V", f"{p_val_shapiro:.4f}")
 
 with col_s2:
     if p_val_shapiro < 0.05:

@@ -17,11 +17,19 @@ df_rend = df_precios.pct_change().dropna()
 
 # --- INCISO (B): ESTADÍSTICOS ---
 media = df_rend.mean()
+if isinstance(media, pd.Series):
+    media = media.item()
+
 kurt = kurtosis(df_rend)
+if isinstance(kurt, np.ndarray): # kurtosis de scipy suele devolver arrays
+    kurt = kurt[0]
+
 sesgo = skew(df_rend)
+if isinstance(sesgo, np.ndarray):
+    sesgo = sesgo[0]
 
 col1, col2, col3 = st.columns(3)
-col1.metric("Media de Rendimientos", f"{media:.2f}")
+col1.metric("Media de Rendimientos", f"{media:.4f}")
 col2.metric("Kurtosis (Exceso)", f"{kurt:.2f}")
 col3.metric("Sesgo (Skew)", f"{sesgo:.2f}")
 

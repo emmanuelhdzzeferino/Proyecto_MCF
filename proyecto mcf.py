@@ -181,3 +181,24 @@ ax_f.plot(df_f.index, df_f['VaR_Vol_Movil_0.05'], label='VaR Vol 5%', color='blu
 ax_f.plot(df_f.index, df_f['VaR_Vol_Movil_0.01'], label='VaR Vol 1%', color='darkblue')
 ax_f.legend()
 st.pyplot(fig_f)
+# TABLA PARA VOLATILIDAD MÓVIL
+st.subheader("Eficiencia: VaR Volatilidad Móvil")
+
+resumen_eficiencia_f = []
+for col in df_f.columns:
+    if col == 'Rendimientos': continue
+    
+    # Una violación ocurre si el rendimiento es menor al VaR estimado
+    n_violaciones = (df_f['Rendimientos'] < df_f[col]).sum()
+    pct_violaciones = (n_violaciones / len(df_f)) * 100
+    
+    # Una buena estimación tiene < 2.5% de violaciones
+    resumen_eficiencia_f.append({
+        'Medida de Riesgo': col,
+        'Violaciones Totales': n_violaciones,
+        '% Violaciones': f"{pct_violaciones:.2f}%",
+        'Estatus': "✅ Buena" if pct_violaciones < 2.5 else "❌ Ajustar"
+    })
+
+# Mostrar la tabla en Streamlit
+st.table(pd.DataFrame(resumen_eficiencia_f).set_index('Medida de Riesgo'))

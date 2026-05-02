@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import yfinance as yf
 import matplotlib.pyplot as plt
-from scipy.stats import kurtosis, skew, norm, t
+from scipy.stats import kurtosis, skew, norm, t, shapiro
 
 # Configuración inicial de la página
 st.set_page_config(page_title="Proyecto Riesgos TSLA", layout="wide")

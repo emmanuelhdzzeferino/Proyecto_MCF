@@ -15,7 +15,7 @@ st.title("📊 Análisis de Riesgo: Tesla (TSLA)")
 df_precios = yf.download("TSLA", start="2010-01-01")['Close']
 df_rend = df_precios.pct_change().dropna()
 
-# --- INCISO (B): ESTADÍSTICOS ---
+# ---ESTADÍSTICOS ---
 media = df_rend.mean()
 if isinstance(media, pd.Series):
     media = media.item()
@@ -40,7 +40,30 @@ ax_rend.plot(df_rend.index, df_rend.values, color='#E69F42', linewidth=0.7)
 ax_rend.axhline(y=0, color='red', linestyle='--', alpha=0.6)
 ax_rend.set_title("Rendimientos Diarios de TSLA")
 st.pyplot(fig_rend)
+# Prueba 
+# PRUEBA DE SHAPIRO-WILK
+# La prueba devuelve: (estadístico W, p-valor)
+stat_shapiro, p_val_shapiro = shapiro(df_rend)
 
+col1, col2, col3 = st.columns(3)
+col1.metric("Media de Rendimientos", f"{media:.4f}")
+col2.metric("Kurtosis (Exceso)", f"{kurt:.2f}")
+col3.metric("Sesgo (Skew)", f"{sesgo:.2f}")
+
+# Mostrar resultado de Shapiro de forma elegante
+st.subheader("Prueba de Normalidad (Shapiro-Wilk)")
+col_s1, col_s2 = st.columns(2)
+
+with col_s1:
+    st.metric("Estadístico W", f"{stat_shapiro:.4f}")
+    st.metric("P-Valor", f"{p_val_shapiro:.4f}")
+
+with col_s2:
+    if p_val_shapiro < 0.05:
+        st.error("❌ Los datos NO siguen una distribución normal (Rechazamos H0)")
+        st.write("Esto sugiere que el VaR Normal podría subestimar el riesgo debido a colas pesadas.")
+    else:
+        st.success("✅ Los datos siguen una distribución normal (No rechazamos H0)")
 # --- TABLA DE VaR Y ES ESTÁTICO ---
 st.subheader("Cálculo de VaR y ES")
 

@@ -42,7 +42,7 @@ ax_rend.set_title("Rendimientos Diarios de TSLA")
 st.pyplot(fig_rend)
 
 # --- INCISO (C): TABLA DE VaR Y ES ESTÁTICO ---
-st.subheader("Cálculo de VaR y ES (Diferentes Métodos)")
+st.subheader("Cálculo de VaR y ES")
 
 mean = np.mean(df_rend)
 stdev = np.std(df_rend)
@@ -56,7 +56,7 @@ sim_student = t.rvs(nu, loc=loc_t, scale=scale_t, size=n_sims)
 resultados_lista = []
 
 for alpha in alphas:
-    # --- TUS FÓRMULAS ORIGINALES ---
+    # 
     var_h = df_rend.quantile(1 - alpha)
     es_h = df_rend[df_rend <= var_h].mean()
 
@@ -85,7 +85,7 @@ for alpha in alphas:
 df_final = pd.DataFrame(resultados_lista).set_index("Confianza")
 st.dataframe(df_final.style.format("{:.4%}"))
 
-# --- INCISO (D): ROLLING WINDOWS ---
+# ---ROLLING WINDOWS ---
 st.subheader("Backtesting: VaR Rolling (95% vs 99%)")
 
 window = 252
@@ -113,7 +113,7 @@ ax_roll.plot(df_rolling.index, df_rolling['VaR_Hist_0.99'], label='VaR Hist 99%'
 ax_roll.legend()
 st.pyplot(fig_roll)
 
-# --- INCISO (E): EFICIENCIA (VIOLACIONES) ---
+# --- EFICIENCIA (VIOLACIONES) ---
 st.subheader("Tabla de Eficiencia (Violaciones)")
 
 resumen_eficiencia = []
@@ -130,7 +130,7 @@ for col in df_rolling.columns:
 
 st.table(pd.DataFrame(resumen_eficiencia).set_index('Medida de Riesgo'))
 
-# --- INCISO (F): VaR VOLATILIDAD MÓVIL ---
+# ---VaR VOLATILIDAD MÓVIL ---
 st.subheader("VaR con Volatilidad Móvil (Fórmula Especial)")
 
 alphas_f = [0.05, 0.01]

@@ -10,7 +10,7 @@ st.set_page_config(page_title="Proyecto Riesgos TSLA", layout="wide")
 
 st.title("📊 Análisis de Riesgo: Tesla (TSLA)")
 
-# --- INCISO (A): DESCARGA DE DATOS ---
+#DESCARGA DE DATOS
 # Usamos tus nombres de variables originales
 df_precios = yf.download("TSLA", start="2010-01-01")['Close']
 df_rend = df_precios.pct_change().dropna()

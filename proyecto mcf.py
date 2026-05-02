@@ -45,12 +45,7 @@ st.pyplot(fig_rend)
 # La prueba devuelve: (estadístico W, p-valor)
 stat_shapiro, p_val_shapiro = shapiro(df_rend)
 
-col1, col2, col3 = st.columns(3)
-col1.metric("Media de Rendimientos", f"{media:.4f}")
-col2.metric("Kurtosis (Exceso)", f"{kurt:.2f}")
-col3.metric("Sesgo (Skew)", f"{sesgo:.2f}")
-
-# Mostrar resultado de Shapiro de forma elegante
+# Mostrar resultado de Shapiro
 st.subheader("Prueba de Normalidad (Shapiro-Wilk)")
 col_s1, col_s2 = st.columns(2)
 
@@ -60,10 +55,10 @@ with col_s1:
 
 with col_s2:
     if p_val_shapiro < 0.05:
-        st.error("❌ Los datos NO siguen una distribución normal (Rechazamos H0)")
+        st.error("Los datos NO siguen una distribución normal (Rechazamos H0)")
         st.write("Esto sugiere que el VaR Normal podría subestimar el riesgo debido a colas pesadas.")
     else:
-        st.success("✅ Los datos siguen una distribución normal (No rechazamos H0)")
+        st.success("Los datos siguen una distribución normal (No rechazamos H0)")
 # --- TABLA DE VaR Y ES ESTÁTICO ---
 st.subheader("Cálculo de VaR y ES")
 

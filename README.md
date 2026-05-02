@@ -1,4 +1,8 @@
 # Proyecto_MCF
+Proyecto elaborado por:
+Hernandez Zeferino Emmanuel 
+Maldonado Morales Karla Sofia 
+Chavarría Ramírez Andrea
 Este proyecto es una aplicación web desarrollada en stramlit para análisis el riesgo de Tesla. Aquí se calculan métricas de riesgo como el Value Risk y Espected shortfall.
 Utilizamos la Api de yahoo finance para obtener los precios históricos de tesla. 
 En el proyecto se pedía asumir ciertas distrubuciones, sin embargo nos dimos a la tarea de hacer la prueba de shapiro wilk para determinar si se distribuia normal, sin embargo nuestro p value nos dio de o por lo que rechazamos a H0. 
